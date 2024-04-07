@@ -10,6 +10,8 @@
 @endphp
 
 @section('content')
+    {{ Breadcrumbs::render('film', $id) }}
+
     <h1 class="text-center">{{__($name)}}</h1>
 
     <p>Дата выхода: @if($date)

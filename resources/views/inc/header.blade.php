@@ -2,7 +2,10 @@
 
 <div class="container d-flex justify-content-between gap-3">
     @auth()
+        <div class="btn-group btn-group-sm btn-group-vertical">
+            <a href="{{route('user.dashboard')}}" class="btn btn-link btn-sm">Профиль</a>
         <a href="/logout" class="btn btn-link">Выйти</a>
+        </div>
     @endauth
 
     @guest()
@@ -11,4 +14,6 @@
             <a href="{{route('user.register')}}" class="btn btn-link btn-sm">Регистрация</a>
         </div>
     @endguest
+
+        <a href="{{route('films')}}" class="btn btn-link btn-sm">Фильмы</a>
 </div>
