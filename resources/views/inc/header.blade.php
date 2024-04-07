@@ -1,0 +1,14 @@
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+
+<div class="container d-flex justify-content-between gap-3">
+    @auth()
+        <a href="/logout" class="btn btn-link">Выйти</a>
+    @endauth
+
+    @guest()
+        <div class="btn-group btn-group-sm btn-group-vertical">
+            <a href="{{route('login')}}" class="btn btn-link btn-sm">Вход</a>
+            <a href="{{route('user.register')}}" class="btn btn-link btn-sm">Регистрация</a>
+        </div>
+    @endguest
+</div>
