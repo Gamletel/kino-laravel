@@ -15,6 +15,8 @@ class Review extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'film_id',
+        'user_id',
         'title',
         'text',
         'stars',

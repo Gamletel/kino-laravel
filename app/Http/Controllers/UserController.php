@@ -49,7 +49,7 @@ class UserController extends Controller
             ]);
 
             if ($request->hasFile('avatar')) {
-                $avatarPath = Storage::put('images', $request->avatar);
+                $avatarPath = Storage::put('public/images', $request->avatar);
                 $user->avatar = $avatarPath;
                 $user->save();
             }

@@ -5,12 +5,15 @@
 
 @section('content')
     <h1 class="text-center mb-3">Профиль</h1>
+    <img src="{{ asset('images/'.$user->avatar) }}" alt="">
 
     <div class="col vstack gap-3">
     <x-profile-menu />
 
 
         <h4>Ваши данные:</h4>
+
+
         <div class="d-flex gap-3">
             <div class="p-2 d-flex gap-1">Имя:
                 <div id="user-name">{{__($user->name)}}</div>

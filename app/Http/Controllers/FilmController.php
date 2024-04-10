@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Film;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\View\View;
 
 class FilmController extends Controller
@@ -14,17 +16,27 @@ class FilmController extends Controller
     {
         $films = Film::all();
 
-        return view('film.index', compact('films'));
+        Redis::set('films', serialize($films));
+        $filmsFromRedis = unserialize(Redis::get('films'));
+
+        return view('film.index', [
+            'films' => $filmsFromRedis ?? $films
+        ]);
     }
 
     public function show(int $id): View
     {
         $film = Film::find($id);
 
-        return view('film.show', compact('film'));
+        Redis::set('film' . $id, serialize($film));
+        $filmFromRedis = unserialize(Redis::get('film' . $id));
+
+        return view('film.show', [
+            'film' => $filmFromRedis ?? $film
+        ]);
     }
 
-    public function create(): \Illuminate\Http\JsonResponse
+    public function create(): JsonResponse
     {
         $film = Film::factory()->create();
 

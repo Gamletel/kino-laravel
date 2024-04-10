@@ -11,10 +11,10 @@
               enctype="multipart/form-data">
             @csrf
             <div class="row">
-                {{--            <x-input-group>--}}
-                {{--                <x-label for="avatar">Изображение профиля</x-label>--}}
-                {{--                <x-input type="file" name="avatar" accept="image/*"/>--}}
-                {{--            </x-input-group>--}}
+                <x-input-group>
+                    <x-label for="avatar">Изображение профиля</x-label>
+                    <x-input type="file" name="avatar" accept="image/*"/>
+                </x-input-group>
 
                 <x-input-group class="col">
                     <x-label for="name">Введите имя</x-label>

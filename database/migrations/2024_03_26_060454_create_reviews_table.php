@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('film_id');
             $table->integer('stars');
-            $table->string('title');
-            $table->text('text');
+            $table->string('title')->nullable();
+            $table->text('text')->nullable();
 
             $table->timestamps();
         });

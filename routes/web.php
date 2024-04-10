@@ -35,7 +35,7 @@ Route::post('user/update/password', [UserController::class, 'updatePassword'])
     ->name('user.update.password');
 Route::get('/user/{id}', [UserController::class, 'show'])
     ->name('user.show');
-//Route::get('/user/{id}/reviews', [UserController::class, 'show'])->name('user.reviews');
+//Route::get('/user/{id}/revws', [UserController::class, 'show'])->name('user.reviews');
 
 /*FILMS*/
 Route::get('/films', [FilmController::class, 'index'])->name('films');
@@ -52,3 +52,6 @@ Route::patch('/film/{id}/edit', [FilmController::class, 'update'])
 Route::get('review/create', [ReviewController::class, 'create'])->name('review.create');
 Route::post('review/create', [ReviewController::class, 'store'])
     ->middleware('auth')->name('review.store');
+Route::delete('review/delete/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
+//Route::post('review/edit/{id}', [ReviewController::class, 'edit'])->name('review.edit');
+Route::patch('review/edit/{id}', [ReviewController::class, 'update'])->name('review.update');
