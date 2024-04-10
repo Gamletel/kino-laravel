@@ -70,4 +70,62 @@ $(document).ready(function () {
             }
         });
     });
+
+    /*AJAX UPDATE CARDS*/
+    let reviewCards = $('.review-card');
+    reviewCards.each(function () {
+        let likeBtn = $(this).find('.like-btn');
+        let dislikeBtn = $(this).find('.dislike-btn');
+        /*AJAX SET LIKE TO REVIEW*/
+        $(this).find('.like-form').on('submit', function (e) {
+            e.preventDefault(); // Отменить стандартное поведение отправки формы
+
+            let form = $(this);
+
+            $.ajax({
+                url: $(this).attr('action'), // URL-адрес маршрута Laravel
+                type: 'POST', // Тип запроса (GET, POST, PUT, DELETE и т.д.)
+                data: $(this).serialize(), // Сериализовать данные формы
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Добавить токен CSRF в заголовок запроса
+                },
+                success: function (response) {
+                    // Обновить данные
+                    likeBtn.toggleClass('active');
+                    likeBtn.find('.count').text(response.likes);
+                    dislikeBtn.removeClass('active');
+                    dislikeBtn.find('.count').text(response.dislikes);
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            });
+        });
+
+        /*AJAX SET DISLIKE TO REVIEW*/
+        $(this).find('.dislike-form').on('submit', function (e) {
+            e.preventDefault(); // Отменить стандартное поведение отправки формы
+
+            let form = $(this);
+
+            $.ajax({
+                url: $(this).attr('action'), // URL-адрес маршрута Laravel
+                type: 'POST', // Тип запроса (GET, POST, PUT, DELETE и т.д.)
+                data: $(this).serialize(), // Сериализовать данные формы
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Добавить токен CSRF в заголовок запроса
+                },
+                success: function (response) {
+                    // Обновить данные
+                    likeBtn.removeClass('active');
+                    likeBtn.find('.count').text(response.likes);
+                    dislikeBtn.toggleClass('active');
+                    dislikeBtn.find('.count').text(response.dislikes);
+                },
+                error: function (error) {
+                    console.log(error)
+                }
+            });
+        });
+    })
 });

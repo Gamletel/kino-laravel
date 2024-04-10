@@ -12,7 +12,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        \Blade::directive('svg', function($arguments) {
+            list($path, $class) = array_pad(explode(',', trim($arguments, "() ")), 2, '');
+            $path = 'images/' . trim($path, "' ");
+            $class = trim($class, "' ");
+
+            $svg = new \DOMDocument();
+            $svg->load(public_path($path));
+            $svg->documentElement->setAttribute("class", $class);
+            $output = $svg->saveXML($svg->documentElement);
+
+            return $output;
+        });
     }
 
     /**

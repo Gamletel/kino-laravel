@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
+use App\Models\UserReviewReaction;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -61,4 +62,24 @@ class ReviewController extends Controller
         $reviews = Review::where('film_id', $filmID)->orderBy('created_at', 'desc')->get();
         return $reviews;
     }
+
+    public function setLike(Request $request)
+    {
+        $reactionController = app(UserReviewReactionController::class);
+        $reactionController->setLike($request->user_id, $request->review_id);
+
+        return response()->json([
+            'likes'=>$reactionController->getLikes($request->review_id),
+            'dislikes'=>$reactionController->getDislikes($request->review_id),
+        ]);
+    }
+    public function setDislike(Request $request)
+    {
+        $reactionController = app(UserReviewReactionController::class);
+        $reactionController->setDislike($request->user_id, $request->review_id);
+
+        return response()->json([
+            'likes'=>$reactionController->getLikes($request->review_id),
+            'dislikes'=>$reactionController->getDislikes($request->review_id),
+        ]);    }
 }

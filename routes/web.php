@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FilmController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserReviewReactionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,20 +39,27 @@ Route::get('/user/{id}', [UserController::class, 'show'])
 //Route::get('/user/{id}/revws', [UserController::class, 'show'])->name('user.reviews');
 
 /*FILMS*/
-Route::get('/films', [FilmController::class, 'index'])->name('films');
+Route::get('/films', [FilmController::class, 'index'])
+    ->name('films');
 Route::get('/film/create', [FilmController::class, 'create'])
     ->name('film.create');
 Route::post('/film/create', [FilmController::class, 'store'])
     ->middleware(['admin'])->name('film.store');
-Route::get('/film/{id}', [FilmController::class, 'show'])->name('film.show');
 Route::get('/film/{id}/edit', [FilmController::class, 'edit'])
     ->middleware(['admin'])->name('film.edit');
 Route::patch('/film/{id}/edit', [FilmController::class, 'update'])
     ->middleware(['admin'])->name('film.update');
+Route::get('/film/{id}', [FilmController::class, 'show'])
+    ->name('film.show');
 
 Route::get('review/create', [ReviewController::class, 'create'])->name('review.create');
 Route::post('review/create', [ReviewController::class, 'store'])
     ->middleware('auth')->name('review.store');
-Route::delete('review/delete/{id}', [ReviewController::class, 'destroy'])->name('review.delete');
+Route::delete('review/{id}/delete', [ReviewController::class, 'destroy'])->name('review.delete');
 //Route::post('review/edit/{id}', [ReviewController::class, 'edit'])->name('review.edit');
-Route::patch('review/edit/{id}', [ReviewController::class, 'update'])->name('review.update');
+Route::patch('review/{id}/edit', [ReviewController::class, 'update'])->name('review.update');
+
+Route::post('review/set-like', [ReviewController::class, 'setLike'])->name('review.setLike');
+Route::post('review/set-dislike', [ReviewController::class, 'setDislike'])->name('review.setDislike');
+Route::get('review/{id}/get-likes', [UserReviewReactionController::class, 'getLikes'])->name('review.getLikes');
+Route::get('review/{id}/get-dislikes', [UserReviewReactionController::class, 'getDislikes'])->name('review.getDislikes');
