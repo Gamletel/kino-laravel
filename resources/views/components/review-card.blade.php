@@ -1,16 +1,18 @@
 @php
-    use App\Models\User;
+    use App\Http\Controllers\UserReviewReactionController;use App\Models\User;
     $user = User::find($review->user_id);
     $id = $review->id;
     $stars = $review->stars;
     $title = $review->title;
     $text = $review->text;
-    $reactionController = app(\App\Http\Controllers\UserReviewReactionController::class);
+    $reactionController = app(UserReviewReactionController::class);
     $likes = $reactionController->getLikes($id);
     $dislikes = $reactionController->getDislikes($id);
+    $user_liked_review = $reactionController->checkUserLike(auth()->id(), $id) ? 'active' : '';
+    $user_disliked_review = $reactionController->checkUserdisLike(auth()->id(), $id) ? 'active' : '';
 @endphp
 <div class="review-card card mb-2">
-    <div class="card-header d-flex justify-content-between flex-wrap-reverse align-items-end">
+    <div class="card-header d-flex gap-2 justify-content-between flex-wrap-reverse align-items-end">
         <div class="d-flex flex-column gap-1">
             <h4 class="review-user-name">
                 {{__($user->name)}}
@@ -43,31 +45,35 @@
                 <p class="card-text review-text">{{__($text)}}</p>
             @endif
 
-            <form class="like-form" action="{{route('review.setLike')}}" method="POST">
-                @csrf
-                <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                <input type="hidden" name="review_id" value="{{ $id }}">
+                <?php if (auth()->check()) { ?>
+            <div class="btn-group btn-group-sm">
+                <form class="like-form" action="{{route('review.setLike')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                    <input type="hidden" name="review_id" value="{{ $id }}">
 
-                <button type="submit" class="like-btn btn btn-outline-primary">
-                    @svg('like.svg', 'sprite')
+                    <button type="submit" class="like-btn btn btn-outline-primary btn-sm
+                {{ $user_liked_review }} ">
+                        @svg('like.svg', 'sprite')
 
-                    <span class="count">{{ $likes }}</span>
-                </button>
-            </form>
+                        <span class="count">{{ $likes }}</span>
+                    </button>
+                </form>
 
-            <form class="dislike-form" action="{{route('review.setDislike')}}" method="POST">
-                @csrf
+                <form class="dislike-form" action="{{route('review.setDislike')}}" method="POST">
+                    @csrf
 
-                <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                <input type="hidden" name="review_id" value="{{ $id }}">
+                    <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+                    <input type="hidden" name="review_id" value="{{ $id }}">
 
-                <button type="submit" class="dislike-btn btn btn-outline-danger">
-                    @svg('dislike.svg', 'sprite')
+                    <button type="submit" class="dislike-btn btn btn-outline-danger btn-sm {{ $user_disliked_review }}">
+                        @svg('dislike.svg', 'sprite')
 
-                    <span class="count">{{ $dislikes }}</span>
-                </button>
-            </form>
-
+                        <span class="count">{{ $dislikes }}</span>
+                    </button>
+                </form>
+            </div>
+            <?php } ?>
         </div>
     @endif
 </div>

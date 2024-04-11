@@ -58,4 +58,13 @@ class UserReviewReactionController extends Controller
 
         return $dislikes;
     }
+
+    public function checkUserLike(string $user_id, string $review_id) : bool
+    {
+        return UserReviewReaction::where('user_id', $user_id)->where('review_id', $review_id)->where('like', true)->exists();
+    }
+    public function checkUserDislike(string $user_id, string $review_id) : bool
+    {
+        return UserReviewReaction::where('user_id', $user_id)->where('review_id', $review_id)->where('dislike', true)->exists();
+    }
 }
