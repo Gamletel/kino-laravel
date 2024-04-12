@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Auth\Events\Registered;
 
 class UserController extends Controller
 {
@@ -41,7 +42,6 @@ class UserController extends Controller
         if (User::where('email', $request->input('email'))->exists()) {
             return back();
         } else {
-
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -53,12 +53,11 @@ class UserController extends Controller
                 $user->avatar = $avatarPath;
                 $user->save();
             }
-            auth()->login($user);
+
+            event(new Registered($user));
 
             return redirect()->route('user.dashboard');
         }
-
-        return back();
     }
 
     /**

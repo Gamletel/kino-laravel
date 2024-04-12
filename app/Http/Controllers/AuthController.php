@@ -34,6 +34,8 @@ class AuthController extends Controller
         $rememberMe = $request->input('remember_me');
 
         if (auth()->attempt($data, $rememberMe)) {
+            $user = Auth::user();
+
             return redirect()->route('user.dashboard');
         } else {
             return back();

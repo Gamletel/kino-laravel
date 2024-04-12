@@ -8,7 +8,7 @@
     <img src="{{ asset('images/'.$user->avatar) }}" alt="">
 
     <div class="col vstack gap-3">
-    <x-profile-menu />
+        <x-profile-menu/>
 
 
         <h4>Ваши данные:</h4>
@@ -58,6 +58,22 @@
                 </div>
             </form>
         </div>
+
+        @if(!$user->hasVerifiedEmail())
+            <div class="alert alert-danger">
+                Почта не подтверждена! Письмо с подтверждением отправлено на почту.
+            </div>
+
+            <form action="{{ route('verification.send') }}" method="POST" class="d-flex flex-column gap-1">
+                @csrf
+                <div class="alert alert-info">Письмо не пришло?</div>
+                <input type="hidden" value="{{ auth()->user() }}">
+
+                <button type="submit" href="" class="btn btn-outline-primary">
+                    Отправить снова
+                </button>
+            </form>
+        @endif
 
         <div class="d-flex flex-column gap-1 align-items-start">
             <div class="span-2">Настройки пароля</div>

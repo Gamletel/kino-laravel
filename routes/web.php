@@ -5,6 +5,7 @@ use App\Http\Controllers\FilmController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserReviewReactionController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -36,7 +37,22 @@ Route::post('user/update/password', [UserController::class, 'updatePassword'])
     ->name('user.update.password');
 Route::get('/user/{id}', [UserController::class, 'show'])
     ->name('user.show');
-//Route::get('/user/{id}/revws', [UserController::class, 'show'])->name('user.reviews');
+
+/*VERIFY EMAIL*/
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/user/dashboard');
+})->name('verification.verify');
+
+Route::post('/email/verification-notification', function () {
+    auth()->user()->sendEmailVerificationNotification();
+
+    return back();
+})->middleware(['auth', 'throttle:6,1'])->middleware('auth')->name('verification.send');
 
 /*FILMS*/
 Route::get('/films', [FilmController::class, 'index'])
@@ -52,14 +68,14 @@ Route::patch('/film/{id}/edit', [FilmController::class, 'update'])
 Route::get('/film/{id}', [FilmController::class, 'show'])
     ->name('film.show');
 
-Route::get('review/create', [ReviewController::class, 'create'])->name('review.create');
+Route::get('review/create', [ReviewController::class, 'create'])->middleware('auth')->name('review.create');
 Route::post('review/create', [ReviewController::class, 'store'])
     ->middleware('auth')->name('review.store');
-Route::delete('review/{id}/delete', [ReviewController::class, 'destroy'])->name('review.delete');
+Route::delete('review/{id}/delete', [ReviewController::class, 'destroy'])->middleware('auth')->name('review.delete');
 //Route::post('review/edit/{id}', [ReviewController::class, 'edit'])->name('review.edit');
-Route::patch('review/{id}/edit', [ReviewController::class, 'update'])->name('review.update');
+Route::patch('review/{id}/edit', [ReviewController::class, 'update'])->middleware('auth')->name('review.update');
 
-Route::post('review/set-like', [ReviewController::class, 'setLike'])->name('review.setLike');
-Route::post('review/set-dislike', [ReviewController::class, 'setDislike'])->name('review.setDislike');
+Route::post('review/set-like', [ReviewController::class, 'setLike'])->middleware('auth')->name('review.setLike');
+Route::post('review/set-dislike', [ReviewController::class, 'setDislike'])->middleware('auth')->name('review.setDislike');
 Route::get('review/{id}/get-likes', [UserReviewReactionController::class, 'getLikes'])->name('review.getLikes');
 Route::get('review/{id}/get-dislikes', [UserReviewReactionController::class, 'getDislikes'])->name('review.getDislikes');

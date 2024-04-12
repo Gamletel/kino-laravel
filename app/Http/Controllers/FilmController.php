@@ -14,25 +14,21 @@ class FilmController extends Controller
 {
     public function index(): View
     {
-        $films = Film::all();
+        $films = Cache::remember('films', 60*60, function (){
+            return Film::all();
+        });
 
-        Redis::set('films', serialize($films));
-        $filmsFromRedis = unserialize(Redis::get('films'));
-
-        return view('film.index', [
-            'films' => $filmsFromRedis ?? $films
-        ]);
+        return view('film.index', compact('films'));
     }
 
     public function show(int $id): View
     {
-        $film = Film::find($id);
-
-        Redis::set('film' . $id, serialize($film));
-        $filmFromRedis = unserialize(Redis::get('film' . $id));
+        $film = Cache::remember('film_'.$id, 60*60, function () use ($id){
+            return Film::find($id);
+        } );
 
         return view('film.show', [
-            'film' => $filmFromRedis ?? $film
+            'film' => $film
         ]);
     }
 

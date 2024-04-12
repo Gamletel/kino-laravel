@@ -23,7 +23,7 @@
 
                 <x-input-group class="col has-validation">
                     <x-label for="email" required>Введите почту</x-label>
-                    <x-input id="email" type="email" name="email" placeholder="email" required/>
+                    <x-input id="email" type="email" name="email" placeholder="email"/>
 
                     <x-input-feedback id="email"/>
                 </x-input-group>

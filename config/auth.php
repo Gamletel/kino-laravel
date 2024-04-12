@@ -39,6 +39,7 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+            'throttle'=>false,
         ],
     ],
 
@@ -69,6 +70,10 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+    ],
+
+    'options' => [
+        'verify_email' => true,
     ],
 
     /*

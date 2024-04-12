@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('admin')->default(false);
             $table->string('avatar')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
 
             $table->timestamps();
             $table->rememberToken();
