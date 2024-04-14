@@ -68,6 +68,7 @@ Route::patch('/film/{id}/edit', [FilmController::class, 'update'])
 Route::get('/film/{id}', [FilmController::class, 'show'])
     ->name('film.show');
 
+/*REVIEW*/
 Route::get('review/create', [ReviewController::class, 'create'])->middleware('auth')->name('review.create');
 Route::post('review/create', [ReviewController::class, 'store'])
     ->middleware('auth')->name('review.store');
