@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,20 +57,32 @@ class UserController extends Controller
 
             event(new Registered($user));
 
-            return redirect()->route('user.dashboard');
+            return redirect()->route('login');
         }
     }
 
     /**
      * Display the specified resource.
+     *
      */
-    public function show(int $id)
+    public function show(string $id)
     {
-        $user = Cache::remember('user:' . $id, 60, function () use ($id) {
-            return User::find($id)->first();
-        });
+        return redirect()->route('user.show.data', $id);
+    }
 
-        return response()->json($user);
+    public function showData(string $id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('user.data', ['user'=>$user]);
+    }
+
+    public function showReviews(string $id)
+    {
+        $user = User::findOrFail($id);
+        $reviews = Review::where('user_id', $id)->get();
+
+        return view('user.reviews', ['user'=>$user, 'reviews'=>$reviews]);
     }
 
     /**
@@ -92,6 +105,7 @@ class UserController extends Controller
 
         return response()->json(['name'=>$name]);
     }
+
     public function updateEmail(Request $request){
         $request->validate([
             'email'=>['required', 'email','string', 'unique:users,email'],
@@ -103,6 +117,21 @@ class UserController extends Controller
         $user->save();
 
         return response()->json(['email'=>$email]);
+    }
+
+    public function updateAvatar(Request $request){
+        $request->validate([
+            'avatar'=>['required', 'image',],
+        ]);
+
+        $user = auth()->user();
+        $avatarPath = Storage::put('public/images', $request->avatar);
+        $user->avatar = $avatarPath;
+        $user->save();
+
+        $avatarURL = asset('storage/'.$avatarPath);
+
+        return response()->json(['avatar'=>$avatarURL]);
     }
 
     public function updatePassword(Request $request){
@@ -135,10 +164,8 @@ class UserController extends Controller
         //
     }
 
-    public function dashboard()
+    public function dashboard(string $id)
     {
-        $user = auth()->user();
-
-        return view('user.dashboard');
+//        return 123;
     }
 }

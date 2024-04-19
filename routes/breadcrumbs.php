@@ -28,6 +28,23 @@ Breadcrumbs::for('film', function (BreadcrumbTrail $trail, int $id) {
     $trail->push($film->name, route('film.show', $id));
 });
 
+//User
+Breadcrumbs::for('user.show', function (BreadcrumbTrail $trail, int $id){
+    $trail->push('Профиль', route('user.show', $id));
+});
+
+//User > Data
+Breadcrumbs::for('user.show.data', function (BreadcrumbTrail $trail, int $id){
+    $trail->parent('user.show', $id);
+    $trail->push('Данные', route('user.show.data', $id));
+});
+
+//User > Reviews
+Breadcrumbs::for('user.show.reviews', function (BreadcrumbTrail $trail, int $id){
+    $trail->parent('user.show', $id);
+    $trail->push('Отзывы', route('user.show.reviews', $id));
+});
+
 // Home > Blog > [Category]
 //Breadcrumbs::for('category', function (BreadcrumbTrail $trail, $category) {
 //    $trail->parent('blog');

@@ -19,15 +19,14 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'film_id'=>['required', 'int'],
-            'user_id'=>['required', 'int'],
-            'stars'=>['required'],
-            'title'=>['nullable', 'string'],
-            'text'=>['nullable', 'string'],
+            'film_id' => ['required', 'int'],
+            'user_id' => ['required', 'int'],
+            'stars' => ['required'],
+            'title' => ['nullable', 'string'],
+            'text' => ['nullable', 'string'],
         ]);
 
         $review = Review::create($data);
-
 
         return back();
     }
@@ -42,9 +41,9 @@ class ReviewController extends Controller
     public function update(Request $request, string $id)
     {
         $data = $request->validate([
-            'stars'=>['required', 'int'],
-            'title'=>['nullable', 'string'],
-            'text'=>['nullable', 'string'],
+            'stars' => ['required', 'int'],
+            'title' => ['nullable', 'string'],
+            'text' => ['nullable', 'string'],
         ]);
 
         $review = Review::find($id);
@@ -69,17 +68,19 @@ class ReviewController extends Controller
         $reactionController->setLike($request->user_id, $request->review_id);
 
         return response()->json([
-            'likes'=>$reactionController->getLikes($request->review_id),
-            'dislikes'=>$reactionController->getDislikes($request->review_id),
+            'likes' => $reactionController->getLikes($request->review_id),
+            'dislikes' => $reactionController->getDislikes($request->review_id),
         ]);
     }
+
     public function setDislike(Request $request)
     {
         $reactionController = app(UserReviewReactionController::class);
         $reactionController->setDislike($request->user_id, $request->review_id);
 
         return response()->json([
-            'likes'=>$reactionController->getLikes($request->review_id),
-            'dislikes'=>$reactionController->getDislikes($request->review_id),
-        ]);    }
+            'likes' => $reactionController->getLikes($request->review_id),
+            'dislikes' => $reactionController->getDislikes($request->review_id),
+        ]);
+    }
 }

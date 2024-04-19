@@ -36,7 +36,7 @@ class AuthController extends Controller
         if (auth()->attempt($data, $rememberMe)) {
             $user = Auth::user();
 
-            return redirect()->route('user.dashboard');
+            return redirect()->route('user.show', $user->id);
         } else {
             return back();
         }

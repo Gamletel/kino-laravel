@@ -1,8 +1,3 @@
-@php
-    use App\Models\Review;
-    use App\Models\User;
-@endphp
-
 @extends('templates.base')
 
 @php
@@ -10,10 +5,6 @@
     $name = $film->name;
     $date = $film->date;
     $description = $film->description;
-
-    $controller = app()->make(\App\Http\Controllers\ReviewController::class);
-
-    $reviews = call_user_func_array([$controller, 'getFilmReviews'], [$id]);
 @endphp
 
 @section('content')
@@ -70,31 +61,4 @@
             @endif
         </div>
     </div>
-
-    {{--<script>
-        $(document).ready(function () {
-            $('#send-review').on('submit', function (e) {
-                let inputs = $(this).find('input');
-                e.preventDefault(); // Отменить стандартное поведение отправки формы
-
-                $.ajax({
-                    url: $(this).attr('action'), // URL-адрес маршрута Laravel
-                    type: 'POST', // Тип запроса (GET, POST, PUT, DELETE и т.д.)
-                    data: $(this).serialize(), // Сериализовать данные формы
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Добавить токен CSRF в заголовок запроса
-                    },
-                    success: function (response) {
-                        let reviewCard = $(`<x-review-card :review="$review" />`).get(0);
-                        reviewCard = reviewCard.outerHTML.replace('$review', JSON.stringify(response.review));
-                        $('#reviews-container').prepend(reviewCard);
-
-                        inputs.val('');
-                    },
-                    error: function (error) {
-                    }
-                });
-            });
-        });
-    </script>--}}
 @endsection

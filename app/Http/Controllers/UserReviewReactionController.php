@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ReviewLiked;
 use App\Models\Film;
 use App\Models\Review;
 use App\Models\User;
@@ -38,6 +39,8 @@ class UserReviewReactionController extends Controller
             ];
 
             Notification::send($user, new LikeReviewNotification($data));
+
+            ReviewLiked::dispatch($review);
         }
     }
 

@@ -3,7 +3,7 @@
 <div class="container d-flex justify-content-between gap-3">
     @auth()
         <div class="btn-group btn-group-sm btn-group-vertical">
-            <a href="{{route('user.dashboard')}}" class="btn btn-link btn-sm">Профиль</a>
+            <a href="{{route('user.show', auth()->id())}}" class="btn btn-link btn-sm">Профиль</a>
         <a href="/logout" class="btn btn-link">Выйти</a>
         </div>
     @endauth

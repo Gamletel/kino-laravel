@@ -5,10 +5,7 @@
         <form action="{{ route('user.store') }}" class="d-flex flex-column gap-2 needs-validation
         @if($errors->any())
         was-validated
-        @endif"
-
-              method="post"
-              enctype="multipart/form-data">
+        @endif" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <x-input-group>

@@ -27,12 +27,18 @@ Route::post('/register', [UserController::class, 'store'])
     ->name('user.store');
 
 /*USER PROFILE*/
-Route::get('/user/dashboard', [UserController::class, 'dashboard'])
-    ->middleware('auth')->name('user.dashboard');
+Route::get('/user/{$id}/dashboard', [UserController::class, 'dashboard'])
+    ->name('user.dashboard');
+Route::get('/user/{id}/data', [UserController::class, 'showData'])
+    ->name('user.show.data');
+Route::get('/user/{id}/reviews', [UserController::class, 'showReviews'])
+    ->name('user.show.reviews');
 Route::post('user/update/name', [UserController::class, 'updateName'])
     ->name('user.update.name');
 Route::post('user/update/email', [UserController::class, 'updateEmail'])
     ->name('user.update.email');
+Route::post('user/update/avatar', [UserController::class, 'updateAvatar'])
+    ->name('user.update.avatar');
 Route::post('user/update/password', [UserController::class, 'updatePassword'])
     ->name('user.update.password');
 Route::get('/user/{id}', [UserController::class, 'show'])

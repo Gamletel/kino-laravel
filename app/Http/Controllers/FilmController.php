@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Film;
+use App\Models\Review;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -26,9 +27,11 @@ class FilmController extends Controller
         $film = Cache::remember('film_'.$id, 60*60, function () use ($id){
             return Film::find($id);
         } );
+        $reviews = Review::where('film_id', $id)->orderBy('created_at', 'desc')->get();
 
         return view('film.show', [
-            'film' => $film
+            'film' => $film,
+            'reviews' => $reviews,
         ]);
     }
 
