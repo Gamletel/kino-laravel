@@ -16,9 +16,12 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(string $id)
     {
-        //
+        $user = auth()->user();
+        $users = User::all();
+
+        return view('user.admin.users', compact('users', 'user'));
     }
 
     /**
@@ -161,11 +164,19 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return back();
     }
 
     public function dashboard(string $id)
     {
 //        return 123;
+    }
+
+    public function showAdminPanel(string $id)
+    {
+        return redirect()->route('user.show.admin.users', $id);
     }
 }

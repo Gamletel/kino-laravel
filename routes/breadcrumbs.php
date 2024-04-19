@@ -18,7 +18,7 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 // Films
 Breadcrumbs::for('films', function (BreadcrumbTrail $trail) {
 //    $trail->parent('home');
-    $trail->push('Films', route('films'));
+    $trail->push('Фильмы', route('films'));
 });
 
 // Films > Film
@@ -32,17 +32,25 @@ Breadcrumbs::for('film', function (BreadcrumbTrail $trail, int $id) {
 Breadcrumbs::for('user.show', function (BreadcrumbTrail $trail, int $id){
     $trail->push('Профиль', route('user.show', $id));
 });
-
 //User > Data
 Breadcrumbs::for('user.show.data', function (BreadcrumbTrail $trail, int $id){
     $trail->parent('user.show', $id);
     $trail->push('Данные', route('user.show.data', $id));
 });
-
 //User > Reviews
 Breadcrumbs::for('user.show.reviews', function (BreadcrumbTrail $trail, int $id){
     $trail->parent('user.show', $id);
     $trail->push('Отзывы', route('user.show.reviews', $id));
+});
+//User > Admin Panel
+Breadcrumbs::for('user.show.admin', function (BreadcrumbTrail $trail, int $id){
+    $trail->parent('user.show', $id);
+    $trail->push('Админ панель', route('user.show.admin', $id));
+});
+//User > Admin Panel > Users
+Breadcrumbs::for('user.show.admin.users', function (BreadcrumbTrail $trail, int $id){
+    $trail->parent('user.show.admin', $id);
+    $trail->push('Пользователи', route('user.show.admin.users', $id));
 });
 
 // Home > Blog > [Category]

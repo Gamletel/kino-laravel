@@ -33,6 +33,12 @@ Route::get('/user/{id}/data', [UserController::class, 'showData'])
     ->name('user.show.data');
 Route::get('/user/{id}/reviews', [UserController::class, 'showReviews'])
     ->name('user.show.reviews');
+Route::get('/user/{id}/admin', [UserController::class, 'showAdminPanel'])
+    ->middleware('admin')->name('user.show.admin');
+Route::get('/user/{id}/admin/users', [UserController::class, 'index'])
+    ->middleware('admin')->name('user.show.admin.users');
+Route::get('/user/{id}/delete', [UserController::class, 'destroy'])
+    ->middleware('admin')->name('user.delete');
 Route::post('user/update/name', [UserController::class, 'updateName'])
     ->name('user.update.name');
 Route::post('user/update/email', [UserController::class, 'updateEmail'])

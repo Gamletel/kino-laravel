@@ -28,7 +28,7 @@
                                         class="value">{{__($review->stars)}}</span>/5</p>
                             </div>
 
-                            @if($review->user_id == auth()->id())
+                            @if($review->user_id == auth()->id() || auth()->user()->admin)
                                 <div class="btn-group h-100">
                                     <div class="edit-review-btn btn btn-outline-primary btn-sm"
                                          data-bs-toggle="modal" data-bs-target="#editReview"
@@ -62,5 +62,6 @@
 
         @else
             <h5 class="text-center">Вы пока что не оставляли отзывы.</h5>
-    @endif
+        @endif
+    </div>
 @endsection

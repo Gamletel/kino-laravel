@@ -15,7 +15,7 @@ class FilmController extends Controller
 {
     public function index(): View
     {
-        $films = Cache::remember('films', 60*60, function (){
+        $films = Cache::remember('films', 60 * 60, function () {
             return Film::all();
         });
 
@@ -24,10 +24,11 @@ class FilmController extends Controller
 
     public function show(int $id): View
     {
-        $film = Cache::remember('film_'.$id, 60*60, function () use ($id){
+        $film = Cache::remember('film_' . $id, 60 * 60, function () use ($id) {
             return Film::find($id);
-        } );
-        $reviews = Review::where('film_id', $id)->orderBy('created_at', 'desc')->get();
+        });
+
+        $reviews = $film->reviews;
 
         return view('film.show', [
             'film' => $film,
@@ -38,6 +39,17 @@ class FilmController extends Controller
     public function create(): JsonResponse
     {
         $film = Film::factory()->create();
+
+        $films = Cache::remember('films', 60 * 60, function () {
+            return Film::all();
+        });
+
+        $films->push($film);
+        Cache::put('films', $films, 60 * 60);
+
+        $film = Cache::remember('film_'.$film->id, 60 * 60, function () use ($film) {
+            return Film::find($film->id);
+        });
 
         return response()->json($film);
     }

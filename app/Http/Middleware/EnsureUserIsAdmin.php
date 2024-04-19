@@ -11,15 +11,14 @@ class EnsureUserIsAdmin
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->user()->admin === 1){
+        if (auth()->user()->admin === 1) {
             return $next($request);
         }
-        else{
-            return redirect('/');
-        }
+
+        return redirect('/');
     }
 }

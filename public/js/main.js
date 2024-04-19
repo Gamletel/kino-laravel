@@ -156,7 +156,7 @@ $(document).ready(function () {
         });
     });
 
-    /*AJAX UPDATE CARDS*/
+    /*AJAX UPDATE REVIEW CARDS*/
     let reviewCards = $('.review-card');
     reviewCards.each(function () {
         let likeBtn = $(this).find('.like-btn');
@@ -212,5 +212,7 @@ $(document).ready(function () {
                 }
             });
         });
+
+
     })
 });
