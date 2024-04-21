@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <form action="{{ route('user.store') }}" class="d-flex flex-column gap-2 needs-validation
+        <form action="{{ route('users.store') }}" class="d-flex flex-column gap-2 needs-validation
         @if($errors->any())
         was-validated
         @endif" method="post" enctype="multipart/form-data">

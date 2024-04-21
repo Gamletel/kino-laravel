@@ -18,7 +18,7 @@
                     <div class="review-card card">
                         <div class="card-header d-flex gap-2 justify-content-between flex-wrap-reverse align-items-end">
                             <div class="d-flex flex-column gap-1">
-                                <a href="{{ route('film.show', $review->film_id)}}#review-{{$review->id}}">
+                                <a href="{{ route('films.show', $review->film_id)}}#review-{{$review->id}}">
                                     <h4 class="review-user-name">
                                         {{__(Film::find($review->film_id)->name)}}
                                     </h4>

@@ -11,7 +11,22 @@
                 <p class="film-card__description card-text">{{__($film->description)}}</p>
             @endif
 
-            <a href="{{route('film.show', $film->id)}}" class="btn btn-primary mt-auto">Подробнее</a>
+            <a href="{{route('films.show', $film->id)}}" class="btn btn-primary mt-auto">Подробнее</a>
         </div>
+
+        @if(auth()->check() && auth()->user()->admin)
+            <div class="card-footer">
+                <div class="btn-group btn-group-sm">
+                    <form action="{{ route('films.delete', $film->id) }}" method="post">
+                        @csrf
+                        @method('delete')
+
+                        <button type="submit" class="btn btn-sm btn-outline-primary">Удалить</button>
+                    </form>
+
+                    <div class="btn btn-sm btn-outline-primary">Редактировать</div>
+                </div>
+            </div>
+        @endif
     </div>
 </div>

@@ -89,7 +89,7 @@ $(document).ready(function () {
     function deleteReview(reviewID) {
         let confirmDelete = $('#deleteReview .confirm-delete');
         confirmDelete.data('review-id', reviewID);
-        let action = `/review/$id/delete`.replace(`$id`, reviewID);
+        let action = `/reviews/$id/delete`.replace(`$id`, reviewID);
         confirmDelete.attr('action', action);
     }
 
@@ -112,7 +112,7 @@ $(document).ready(function () {
         textInput.val(textValue);
 
         editReviewForm.data('review-id', reviewID);
-        let action = `/review/$id/edit`.replace(`$id`, reviewID);
+        let action = `/reviews/$id/edit`.replace(`$id`, reviewID);
         editReviewForm.attr('action', action);
         editReviewForm.attr('data-review-id', reviewID);
     }
@@ -152,6 +152,7 @@ $(document).ready(function () {
                 curReviewCard.find('.review-text').text(response.text);
             },
             error: function (error) {
+                console.log(error)
             }
         });
     });

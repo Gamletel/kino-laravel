@@ -22,33 +22,35 @@ Route::post('/login', [AuthController::class, 'loginPost'])
 Route::get('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 Route::get('/register', [UserController::class, 'register'])
-    ->name('user.register');
+    ->name('users.register');
 Route::post('/register', [UserController::class, 'store'])
-    ->name('user.store');
+    ->name('users.store');
 
 /*USER PROFILE*/
-Route::get('/user/{$id}/dashboard', [UserController::class, 'dashboard'])
-    ->name('user.dashboard');
-Route::get('/user/{id}/data', [UserController::class, 'showData'])
-    ->name('user.show.data');
-Route::get('/user/{id}/reviews', [UserController::class, 'showReviews'])
-    ->name('user.show.reviews');
-Route::get('/user/{id}/admin', [UserController::class, 'showAdminPanel'])
-    ->middleware('admin')->name('user.show.admin');
-Route::get('/user/{id}/admin/users', [UserController::class, 'index'])
-    ->middleware('admin')->name('user.show.admin.users');
-Route::get('/user/{id}/delete', [UserController::class, 'destroy'])
-    ->middleware('admin')->name('user.delete');
-Route::post('user/update/name', [UserController::class, 'updateName'])
-    ->name('user.update.name');
-Route::post('user/update/email', [UserController::class, 'updateEmail'])
-    ->name('user.update.email');
-Route::post('user/update/avatar', [UserController::class, 'updateAvatar'])
-    ->name('user.update.avatar');
-Route::post('user/update/password', [UserController::class, 'updatePassword'])
-    ->name('user.update.password');
-Route::get('/user/{id}', [UserController::class, 'show'])
-    ->name('user.show');
+Route::get('/users/{$id}/dashboard', [UserController::class, 'dashboard'])
+    ->name('users.dashboard');
+Route::get('/users/{id}/data', [UserController::class, 'showData'])
+    ->name('users.show.data');
+Route::get('/users/{id}/reviews', [UserController::class, 'showReviews'])
+    ->name('users.show.reviews');
+Route::get('/users/{id}/admin', [UserController::class, 'showAdminPanel'])
+    ->middleware('admin')->name('users.show.admin');
+Route::get('/users/{id}/admin/users', [UserController::class, 'index'])
+    ->middleware('admin')->name('users.show.admin.users');
+Route::get('/users/{id}/admin/films', [FilmController::class, 'index'])
+    ->middleware('admin')->name('users.show.admin.films');
+Route::delete('/users/{id}/delete', [UserController::class, 'destroy'])
+    ->middleware('admin')->name('users.delete');
+Route::post('users/update/name', [UserController::class, 'updateName'])
+    ->name('users.update.name');
+Route::post('users/update/email', [UserController::class, 'updateEmail'])
+    ->name('users.update.email');
+Route::post('users/update/avatar', [UserController::class, 'updateAvatar'])
+    ->name('users.update.avatar');
+Route::post('users/update/password', [UserController::class, 'updatePassword'])
+    ->name('users.update.password');
+Route::get('/users/{id}', [UserController::class, 'show'])
+    ->name('users.show');
 
 /*VERIFY EMAIL*/
 Route::get('/email/verify', function () {
@@ -69,26 +71,35 @@ Route::post('/email/verification-notification', function () {
 /*FILMS*/
 Route::get('/films', [FilmController::class, 'index'])
     ->name('films');
-Route::get('/film/create', [FilmController::class, 'create'])
-    ->name('film.create');
-Route::post('/film/create', [FilmController::class, 'store'])
-    ->middleware(['admin'])->name('film.store');
-Route::get('/film/{id}/edit', [FilmController::class, 'edit'])
-    ->middleware(['admin'])->name('film.edit');
-Route::patch('/film/{id}/edit', [FilmController::class, 'update'])
-    ->middleware(['admin'])->name('film.update');
-Route::get('/film/{id}', [FilmController::class, 'show'])
-    ->name('film.show');
+Route::get('/films/create', [FilmController::class, 'create'])
+    ->name('films.create');
+Route::post('/films/create', [FilmController::class, 'store'])
+    ->middleware(['admin'])->name('films.store');
+Route::delete('/films/{id}', [FilmController::class, 'destroy'])
+    ->middleware(['admin'])->name('films.delete');
+Route::get('/films/{id}/edit', [FilmController::class, 'edit'])
+    ->middleware(['admin'])->name('films.edit');
+Route::patch('/films/{id}/edit', [FilmController::class, 'update'])
+    ->middleware(['admin'])->name('films.update');
+Route::get('/films/{id}', [FilmController::class, 'show'])
+    ->name('films.show');
 
 /*REVIEW*/
-Route::get('review/create', [ReviewController::class, 'create'])->middleware('auth')->name('review.create');
-Route::post('review/create', [ReviewController::class, 'store'])
-    ->middleware('auth')->name('review.store');
-Route::delete('review/{id}/delete', [ReviewController::class, 'destroy'])->middleware('auth')->name('review.delete');
+Route::get('reviews/create', [ReviewController::class, 'create'])->middleware('auth')
+    ->name('reviews.create');
+Route::post('reviews/create', [ReviewController::class, 'store'])
+    ->middleware('auth')->name('reviews.store');
+Route::delete('reviews/{id}/delete', [ReviewController::class, 'destroy'])->middleware('auth')
+    ->name('reviews.delete');
 //Route::post('review/edit/{id}', [ReviewController::class, 'edit'])->name('review.edit');
-Route::patch('review/{id}/edit', [ReviewController::class, 'update'])->middleware('auth')->name('review.update');
+Route::patch('reviews/{id}/edit', [ReviewController::class, 'update'])->middleware('auth')
+    ->name('reviews.update');
 
-Route::post('review/set-like', [ReviewController::class, 'setLike'])->middleware('auth')->name('review.setLike');
-Route::post('review/set-dislike', [ReviewController::class, 'setDislike'])->middleware('auth')->name('review.setDislike');
-Route::get('review/{id}/get-likes', [UserReviewReactionController::class, 'getLikes'])->name('review.getLikes');
-Route::get('review/{id}/get-dislikes', [UserReviewReactionController::class, 'getDislikes'])->name('review.getDislikes');
+Route::post('reviews/set-like', [ReviewController::class, 'setLike'])->middleware('auth')
+    ->name('reviews.setLike');
+Route::post('reviews/set-dislike', [ReviewController::class, 'setDislike'])
+    ->middleware('auth')->name('reviews.setDislike');
+Route::get('reviews/{id}/get-likes', [UserReviewReactionController::class, 'getLikes'])
+    ->name('reviews.getLikes');
+Route::get('reviews/{id}/get-dislikes', [UserReviewReactionController::class, 'getDislikes'])
+    ->name('reviews.getDislikes');

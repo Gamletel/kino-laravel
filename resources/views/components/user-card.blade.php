@@ -23,7 +23,7 @@
 
     <div class="card-footer">
         @if(auth()->id() != $user->id)
-            <a href="{{ route('user.delete', $user->id) }}" class="btn btn-outline-primary">Удалить</a>
+            <a href="{{ route('users.delete', $user->id) }}" class="btn btn-outline-primary">Удалить</a>
         @endif
     </div>
 </div>

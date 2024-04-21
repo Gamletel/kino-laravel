@@ -2,32 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Users\StoreUserRequest;
+use App\Http\Requests\Users\UpdateAvatarUserRequest;
+use App\Http\Requests\Users\UpdateEmailUserRequest;
+use App\Http\Requests\Users\UpdateNameUserRequest;
 use App\Models\Review;
 use App\Models\User;
+use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
+    private UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index(string $id)
+    public function index(int $id = null): View
     {
-        $user = auth()->user();
+        if ($id == null) {
+            $user = auth()->user();
+        }else{
+            $user = User::find($id);
+        }
+
         $users = User::all();
 
-        return view('user.admin.users', compact('users', 'user'));
+        return view('user.admin.users', compact( 'user'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function register()
+    public function register(): View
     {
         return view('auth.register');
     }
@@ -35,57 +50,33 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $data = $request->validate([
-            'name' => ['nullable', 'string'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'confirmed'],
-        ]);
-
-        if (User::where('email', $request->input('email'))->exists()) {
-            return back();
-        } else {
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => $data['password'],
-            ]);
-
-            if ($request->hasFile('avatar')) {
-                $avatarPath = Storage::put('public/images', $request->avatar);
-                $user->avatar = $avatarPath;
-                $user->save();
-            }
-
-            event(new Registered($user));
-
-            return redirect()->route('login');
-        }
+        return $this->userService->store($request);
     }
 
     /**
      * Display the specified resource.
      *
      */
-    public function show(string $id)
+    public function show(string $id): RedirectResponse
     {
-        return redirect()->route('user.show.data', $id);
+        return redirect()->route('users.show.data', $id);
     }
 
-    public function showData(string $id)
+    public function showData(string $id): View
     {
         $user = User::findOrFail($id);
 
-        return view('user.data', ['user'=>$user]);
+        return view('user.data', ['user' => $user]);
     }
 
-    public function showReviews(string $id)
+    public function showReviews(string $id): View
     {
         $user = User::findOrFail($id);
         $reviews = Review::where('user_id', $id)->get();
 
-        return view('user.reviews', ['user'=>$user, 'reviews'=>$reviews]);
+        return view('user.reviews', ['user' => $user, 'reviews' => $reviews]);
     }
 
     /**
@@ -96,51 +87,39 @@ class UserController extends Controller
 
     }
 
-    public function updateName(Request $request){
-        $request->validate([
-            'name'=>['required', 'string'],
-        ]);
+    public function updateName(UpdateNameUserRequest $request): JsonResponse
+    {
+        $data = $request->validated();
 
-        $user = auth()->user();
-        $name = $request->input('name');
-        $user->name = $name;
-        $user->save();
+        $this->userService->updateName($data->name);
 
-        return response()->json(['name'=>$name]);
+        return response()->json(['name' => $data->name]);
     }
 
-    public function updateEmail(Request $request){
-        $request->validate([
-            'email'=>['required', 'email','string', 'unique:users,email'],
-        ]);
+    public function updateEmail(UpdateEmailUserRequest $request): JsonResponse
+    {
+        $data = $request->validated();
 
-        $user = auth()->user();
-        $email = $request->input('email');
-        $user->email = $email;
-        $user->save();
+        $this->userService->updateEmail($data->email);
 
-        return response()->json(['email'=>$email]);
+        return response()->json(['email' => $data->email]);
     }
 
-    public function updateAvatar(Request $request){
-        $request->validate([
-            'avatar'=>['required', 'image',],
-        ]);
+    public function updateAvatar(UpdateAvatarUserRequest $request): JsonResponse
+    {
+        $data = $request->validated();
 
-        $user = auth()->user();
-        $avatarPath = Storage::put('public/images', $request->avatar);
-        $user->avatar = $avatarPath;
-        $user->save();
+        $avatarURL = $this->userService->updateAvatar($data->avatar);
 
-        $avatarURL = asset('storage/'.$avatarPath);
-
-        return response()->json(['avatar'=>$avatarURL]);
+        return response()->json(['avatar' => $avatarURL]);
     }
 
-    public function updatePassword(Request $request){
+    public function updatePassword(Request $request): JsonResponse
+    {
+
         $request->validate([
-            'password'=>['required', 'current_password'],
-            'password_new'=>['required', 'min:8'],
+            'password' => ['required', 'current_password'],
+            'password_new' => ['required', 'min:8'],
         ]);
         $user = auth()->user();
         $password = $request->input('password_new');
@@ -148,7 +127,7 @@ class UserController extends Controller
         $user->password = $password;
         $user->save();
 
-        return response()->json(['password'=>$password]);
+        return response()->json(['password' => $password]);
     }
 
     /**
@@ -162,21 +141,20 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        $this->userService->delete($id);
 
         return back();
     }
 
     public function dashboard(string $id)
     {
-//        return 123;
+        //TODO я не помню что тут должно быть
     }
 
     public function showAdminPanel(string $id)
     {
-        return redirect()->route('user.show.admin.users', $id);
+        return redirect()->route('users.show.admin.users', $id);
     }
 }

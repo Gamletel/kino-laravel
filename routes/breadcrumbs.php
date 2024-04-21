@@ -25,32 +25,32 @@ Breadcrumbs::for('films', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('film', function (BreadcrumbTrail $trail, int $id) {
     $film = Film::find($id);
     $trail->parent('films');
-    $trail->push($film->name, route('film.show', $id));
+    $trail->push($film->name, route('films.show', $id));
 });
 
 //User
-Breadcrumbs::for('user.show', function (BreadcrumbTrail $trail, int $id){
-    $trail->push('Профиль', route('user.show', $id));
+Breadcrumbs::for('users.show', function (BreadcrumbTrail $trail, int $id){
+    $trail->push('Профиль', route('users.show', $id));
 });
 //User > Data
-Breadcrumbs::for('user.show.data', function (BreadcrumbTrail $trail, int $id){
-    $trail->parent('user.show', $id);
-    $trail->push('Данные', route('user.show.data', $id));
+Breadcrumbs::for('users.show.data', function (BreadcrumbTrail $trail, int $id){
+    $trail->parent('users.show', $id);
+    $trail->push('Данные', route('users.show.data', $id));
 });
 //User > Reviews
-Breadcrumbs::for('user.show.reviews', function (BreadcrumbTrail $trail, int $id){
-    $trail->parent('user.show', $id);
-    $trail->push('Отзывы', route('user.show.reviews', $id));
+Breadcrumbs::for('users.show.reviews', function (BreadcrumbTrail $trail, int $id){
+    $trail->parent('users.show', $id);
+    $trail->push('Отзывы', route('users.show.reviews', $id));
 });
 //User > Admin Panel
-Breadcrumbs::for('user.show.admin', function (BreadcrumbTrail $trail, int $id){
-    $trail->parent('user.show', $id);
-    $trail->push('Админ панель', route('user.show.admin', $id));
+Breadcrumbs::for('users.show.admin', function (BreadcrumbTrail $trail, int $id){
+    $trail->parent('users.show', $id);
+    $trail->push('Админ панель', route('users.show.admin', $id));
 });
 //User > Admin Panel > Users
-Breadcrumbs::for('user.show.admin.users', function (BreadcrumbTrail $trail, int $id){
-    $trail->parent('user.show.admin', $id);
-    $trail->push('Пользователи', route('user.show.admin.users', $id));
+Breadcrumbs::for('users.show.admin.users', function (BreadcrumbTrail $trail, int $id){
+    $trail->parent('users.show.admin', $id);
+    $trail->push('Пользователи', route('users.show.admin.users', $id));
 });
 
 // Home > Blog > [Category]

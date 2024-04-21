@@ -4,8 +4,11 @@ namespace App\Listeners;
 
 use App\Events\ReviewLiked;
 use App\Models\Review;
+use App\Notifications\LikeReviewNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Notification;
 
 class ReviewLikedListener
 {
@@ -20,8 +23,10 @@ class ReviewLikedListener
     /**
      * Handle the event.
      */
-    public function handle(Review $review): void
+    public function handle(ReviewLiked $event)
     {
-        $review->user_id->notify(new CommentLikedNotification($review));
+        Notification::send($event->user, new LikeReviewNotification($event->data));
     }
+
+
 }

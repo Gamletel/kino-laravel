@@ -9,6 +9,7 @@
         "diglactic/laravel-breadcrumbs": "^9.0",
         "laravel/framework": "^11.0",
         "laravel/reverb": "@beta",
+        "laravel/scout": "^10.8",
         "laravel/tinker": "^2.9",
         "pusher/pusher-php-server": "^7.2"
     },

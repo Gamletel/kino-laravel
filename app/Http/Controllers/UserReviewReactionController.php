@@ -9,11 +9,12 @@ use App\Models\User;
 use App\Models\UserReviewReaction;
 use App\Notifications\LikeReviewNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 
 class UserReviewReactionController extends Controller
 {
-    public function setLike(string $user_id, string $review_id)
+    public function setLike(string $user_id, string $review_id):void
     {
         $userReviewReaction = UserReviewReaction::where('user_id', $user_id)->where('review_id', $review_id)->first();
         if ($userReviewReaction) {
@@ -38,13 +39,11 @@ class UserReviewReactionController extends Controller
                 'film_name'=>$film_name
             ];
 
-            Notification::send($user, new LikeReviewNotification($data));
-
-            ReviewLiked::dispatch($review);
+            ReviewLiked::dispatch($review, $user, $data);
         }
     }
 
-    public function setDislike(string $user_id, string $review_id)
+    public function setDislike(string $user_id, string $review_id):void
     {
         $userReviewReaction = UserReviewReaction::where('user_id', $user_id)->where('review_id', $review_id)->first();
         if ($userReviewReaction) {
@@ -63,14 +62,14 @@ class UserReviewReactionController extends Controller
 
     }
 
-    public function getLikes(string $id)
+    public function getLikes(string $id):int
     {
         $likes = UserReviewReaction::where('review_id', $id)->where('like', true)->count();
 
         return $likes;
     }
 
-    public function getDislikes(string $id)
+    public function getDislikes(string $id):int
     {
         $dislikes = UserReviewReaction::where('review_id', $id)->where('dislike', true)->count();
 

@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Events\ReviewLiked;
+use App\Listeners\ReviewLikedListener;
 use App\Models\Film;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,6 +35,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        Paginator::useBootstrapFive();
     }
 }

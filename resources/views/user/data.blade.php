@@ -27,7 +27,7 @@
                     Изменить
                 </a>
 
-                <form action="{{route('user.update.avatar')}}" method="post" id="update-avatar"
+                <form action="{{route('users.update.avatar')}}" method="post" id="update-avatar"
                       class="collapse collapse-horizontal" enctype="multipart/form-data">
                     @csrf
                     <div class="d-flex gap-1 ">
@@ -53,7 +53,7 @@
                     Изменить
                 </a>
 
-                <form action="{{route('user.update.name')}}" method="post" id="update-name"
+                <form action="{{route('users.update.name')}}" method="post" id="update-name"
                       class="collapse collapse-horizontal">
                     @csrf
                     <div class="d-flex gap-1 ">
@@ -79,7 +79,7 @@
                     Изменить
                 </a>
 
-                <form action="{{route('user.update.email')}}" method="post" id="update-email"
+                <form action="{{route('users.update.email')}}" method="post" id="update-email"
                       class="collapse collapse-horizontal needs-validation">
                     @csrf
                     <div class="d-flex gap-1 align-items-start">
@@ -115,7 +115,7 @@
 
             <div class="d-flex flex-column gap-1 align-items-start">
                 <div class="span-2">Настройки пароля</div>
-                <form action="{{route('user.update.password')}}" method="post" id="update-password"
+                <form action="{{route('users.update.password')}}" method="post" id="update-password"
                       class="needs-validation">
                     @csrf
                     <div class="d-flex flex-column gap-1 align-items-start">

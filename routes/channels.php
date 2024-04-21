@@ -1,12 +1,13 @@
 <?php
 
 use App\Models\Review;
+use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
+use App\Broadcasting\UserChannel;
 
-//Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-//    return (int) $user->id === (int) $id;
-//});
-
-Broadcast::channel('review-liked-channel', function (Review $review){
-    return auth()->check();
+//Broadcast::channel('test', UserChannel::class);
+//Broadcast::channel('test', \App\Broadcasting\TestChannel::class);
+Broadcast::channel('test', function ($user) {
+    // Проверяем, что пользователь авторизован
+    return $user !== null;
 });

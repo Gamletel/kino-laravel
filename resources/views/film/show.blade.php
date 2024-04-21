@@ -22,7 +22,7 @@
 
     <div class="border border-primary p-3">
         @auth()
-            <form action="{{ route('review.store') }}" method="post" id="send-review" class="p-2 mb-3 border border-primary d-flex flex-column gap-2 needs-validation
+            <form action="{{ route('reviews.store') }}" method="post" id="send-review" class="p-2 mb-3 border border-primary d-flex flex-column gap-2 needs-validation
         @if($errors->any()) was-validated @endif">
                 <h5>Оставить отзыв</h5>
 
