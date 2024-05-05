@@ -1,3 +1,5 @@
+
+
 $(document).ready(function () {
 
     /*AJAX UPDATE USER NAME*/
@@ -69,6 +71,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Добавить токен CSRF в заголовок запроса
             },
             success: function (response) {
+                console.log(response)
                 // Обновить данные на странице
                 input.removeClass('is-invalid');
                 input.addClass('is-valid');
@@ -213,7 +216,44 @@ $(document).ready(function () {
                 }
             });
         });
-
-
     })
+
+    /*AJAX DELETE GENRE*/
+    function deleteGenre(genreID, genreName) {
+        let confirmDelete = $('#deleteGenre .confirm-delete');
+        let formGenreName = $('#deleteGenre #genre-name');
+        formGenreName.text(genreName);
+        confirmDelete.data('genre-id', genreID);
+        let action = `/genres/$id/delete`.replace(`$id`, genreID);
+        confirmDelete.attr('action', action);
+    }
+
+    let deleteGenreBtn = $('.delete-genre-btn');
+    deleteGenreBtn.click(function () {
+        let genreID = $(this).data('genre-id');
+        let genreName = $(this).data('genre-name');
+        deleteGenre(genreID, genreName);
+    });
+
+    $(this).find('#delete-genre-form').on('submit', function (e) {
+        e.preventDefault(); // Отменить стандартное поведение отправки формы
+        let form = $(this);
+
+        $.ajax({
+            url: $(this).attr('action'), // URL-адрес маршрута Laravel
+            type: 'POST', // Тип запроса (GET, POST, PUT, DELETE и т.д.)
+            data: $(this).serialize(), // Сериализовать данные формы
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Добавить токен CSRF в заголовок запроса
+            },
+            success: function (response) {
+                // Обновить данные
+                console.log(response.id);
+                $(`#genre-card-${response.id}`).remove();
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+    });
 });

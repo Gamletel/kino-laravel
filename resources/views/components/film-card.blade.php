@@ -8,7 +8,7 @@
             <h5 class="film-card__name card-title">{{__($film->name)}}</h5>
 
             @if($film->description)
-                <p class="film-card__description card-text">{{__($film->description)}}</p>
+                <div class="film-card__description card-text">{!! $film->description !!}</div>
             @endif
 
             <a href="{{route('films.show', $film->id)}}" class="btn btn-primary mt-auto">Подробнее</a>
@@ -24,7 +24,7 @@
                         <button type="submit" class="btn btn-sm btn-outline-primary">Удалить</button>
                     </form>
 
-                    <div class="btn btn-sm btn-outline-primary">Редактировать</div>
+                    <a href="{{route('films.edit', $film->id)}}" class="btn btn-sm btn-outline-primary">Редактировать</a>
                 </div>
             </div>
         @endif

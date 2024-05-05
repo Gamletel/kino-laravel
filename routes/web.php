@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FilmController;
+use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserReviewReactionController;
@@ -26,7 +27,7 @@ Route::get('/register', [UserController::class, 'register'])
 Route::post('/register', [UserController::class, 'store'])
     ->name('users.store');
 
-/*USER PROFILE*/
+/*USER DASHBOARD*/
 Route::get('/users/{$id}/dashboard', [UserController::class, 'dashboard'])
     ->name('users.dashboard');
 Route::get('/users/{id}/data', [UserController::class, 'showData'])
@@ -39,6 +40,8 @@ Route::get('/users/{id}/admin/users', [UserController::class, 'index'])
     ->middleware('admin')->name('users.show.admin.users');
 Route::get('/users/{id}/admin/films', [FilmController::class, 'index'])
     ->middleware('admin')->name('users.show.admin.films');
+Route::get('/users/{id}/admin/genres', [GenreController::class, 'index'])
+    ->middleware('admin')->name('users.show.admin.genres');
 Route::delete('/users/{id}/delete', [UserController::class, 'destroy'])
     ->middleware('admin')->name('users.delete');
 Route::post('users/update/name', [UserController::class, 'updateName'])
@@ -71,8 +74,12 @@ Route::post('/email/verification-notification', function () {
 /*FILMS*/
 Route::get('/films', [FilmController::class, 'index'])
     ->name('films');
+Route::get('/films/genre/{genreSlug}', [FilmController::class, 'genre'])
+    ->name('films.genre');
+Route::get('/films/search', [FilmController::class, 'search'])
+    ->name('films.search');
 Route::get('/films/create', [FilmController::class, 'create'])
-    ->name('films.create');
+    ->middleware('admin')->name('films.create');
 Route::post('/films/create', [FilmController::class, 'store'])
     ->middleware(['admin'])->name('films.store');
 Route::delete('/films/{id}', [FilmController::class, 'destroy'])
@@ -103,3 +110,8 @@ Route::get('reviews/{id}/get-likes', [UserReviewReactionController::class, 'getL
     ->name('reviews.getLikes');
 Route::get('reviews/{id}/get-dislikes', [UserReviewReactionController::class, 'getDislikes'])
     ->name('reviews.getDislikes');
+
+//GENRES
+Route::post('/genres/create', [GenreController::class, 'store'])
+    ->name('genres.store');
+Route::delete('/genres/{id}/delete', [GenreController::class, 'destroy'])->middleware('admin')->name('genres.delete');

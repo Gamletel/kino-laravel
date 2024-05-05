@@ -9,9 +9,14 @@
         <div class="btn-group btn-group-vertical w-auto h-100 sticky-top">
             <a href="{{route('users.show.admin.users', auth()->id())}}" class="btn btn-outline-primary btn-sm
             @if(url()->current() == route('users.show.admin.users', auth()->id())) active @endif">Пользователи</a>
+
             <a href="{{route('users.show.admin.films', auth()->id())}}" class="btn btn-outline-primary btn-sm
             @if(url()->current() == route('users.show.admin.films', auth()->id())) active @endif">Фильмы</a>
+
             <div class="btn btn-outline-primary btn-sm">Отзывы</div>
+
+            <a href="{{route('users.show.admin.genres', auth()->id())}}" class="btn btn-outline-primary btn-sm
+            @if(url()->current() == route('users.show.admin.genres', auth()->id())) active @endif">Жанры</a>
         </div>
 
         @yield('admin.content')

@@ -1,24 +1,29 @@
 @extends('templates.base')
 
-@php
-    $id = $film->id;
-    $name = $film->name;
-    $date = $film->date;
-    $description = $film->description;
-@endphp
-
 @section('content')
-    {{ Breadcrumbs::render('film', $id) }}
+    {{ Breadcrumbs::render('film', $film->id) }}
 
-    <h1 class="text-center">{{__($name)}}</h1>
+    <h1 class="text-center">{{__($film->name)}}</h1>
 
-    <p>Дата выхода: @if($date)
-            {{__($date)}}
+    <p>Дата выхода: @if($film->date)
+            {{__($film->date)}}
         @else
             -
-        @endif</p>
+        @endif
+    </p>
 
-    <p class="lead w-50">О фильме: {{__($description)}}</p>
+    @if(!empty($genres))
+        <div class="genres">
+
+            @foreach($genres as $genre)
+                <a href="{{ route('films.genre', $genre->slug) }}" class="link">
+                    {{__($genre->name)}}
+                </a>
+            @endforeach
+        </div>
+    @endif
+
+    <div class="lead w-50">О фильме: {!! $film->description !!}</div>
 
     <div class="border border-primary p-3">
         @auth()
@@ -29,7 +34,7 @@
                 @csrf
 
                 <x-input type="hidden" name="user_id" value="{{auth()->id()}}"/>
-                <x-input type="hidden" name="film_id" value="{{$id}}"/>
+                <x-input type="hidden" name="film_id" value="{{$film->id}}"/>
 
                 <x-input-group>
                     <x-label for="stars" required>Оценка:</x-label>
@@ -43,7 +48,11 @@
 
                 <x-input-group>
                     <x-label for="text">Отзыв:</x-label>
-                    <x-input name="text" id="text"/>
+
+                    <div class="flex-grow-1">
+                        <textarea name="text" id="text">
+                        </textarea>
+                    </div>
                 </x-input-group>
 
                 <button type="submit" class="btn btn-primary">Отправить</button>

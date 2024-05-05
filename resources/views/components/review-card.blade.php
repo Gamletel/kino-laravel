@@ -53,7 +53,7 @@
             @endif
 
             @if($review->text)
-                <p class="card-text review-text">{{__($review->text)}}</p>
+                <p class="card-text review-text">{!! $review->text !!}</p>
             @endif
 
 

@@ -52,7 +52,9 @@
 
                                 <x-input-group>
                                     <x-label class="input-group-text" for="text">Отзыв:</x-label>
-                                    <textarea name="text" id="text" class="form-control" aria-label="With textarea"></textarea>
+                                    <div class="flex-grow-1">
+                                     <textarea name="text" id="text" class="form-control" aria-label="With textarea"></textarea>
+                                    </div>
                                 </x-input-group>
                             </div>
                         </div>
@@ -64,6 +66,32 @@
                         </div>
                     </form>
                 @endauth
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteGenre">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteGenreModalTitle">Удалить жанр</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Вы действительно хотите удалить жанр: <span id="genre-name"></span></p>
+                </div>
+
+                <div class="modal-footer d-flex align-items-center justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+
+                    <form action="#" id="delete-genre-form" method="POST" data-genre-id="" class="confirm-delete">
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="submit" type="button" class="btn btn-primary ">Удалить</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

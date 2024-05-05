@@ -6,7 +6,7 @@
 
 @section('dashboard.content')
     <div class="col vstack gap-3">
-        <h4>Ваши данные:</h4>
+        <h4>Данные:</h4>
 
         <div class="d-flex gap-3 align-items-center">
             <div class="p-2 d-flex gap-1 align-items-center">

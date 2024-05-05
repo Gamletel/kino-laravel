@@ -12,6 +12,7 @@ use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -36,7 +37,7 @@ class UserController extends Controller
 
         $users = User::all();
 
-        return view('user.admin.users', compact( 'user'));
+        return view('user.admin.users', compact( 'users'));
     }
 
     /**
@@ -91,27 +92,30 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        $this->userService->updateName($data->name);
+        $this->userService->updateName($data['name']);
 
-        return response()->json(['name' => $data->name]);
+        return response()->json(['name' => $data['name']]);
     }
 
     public function updateEmail(UpdateEmailUserRequest $request): JsonResponse
     {
         $data = $request->validated();
 
-        $this->userService->updateEmail($data->email);
+        $this->userService->updateEmail($data['email']);
 
-        return response()->json(['email' => $data->email]);
+        return response()->json(['email' => $data['email']]);
     }
 
-    public function updateAvatar(UpdateAvatarUserRequest $request): JsonResponse
+    public function updateAvatar(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->avatar;
 
-        $avatarURL = $this->userService->updateAvatar($data->avatar);
+        $user = auth()->user();
+        $avatarPath = Storage::put('public/images', $data);
+        $user->avatar = $avatarPath;
+        $user->save();
 
-        return response()->json(['avatar' => $avatarURL]);
+        return response()->json(['avatar' => asset('storage/'.$avatarPath)]);
     }
 
     public function updatePassword(Request $request): JsonResponse

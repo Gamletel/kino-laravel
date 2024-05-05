@@ -7,6 +7,7 @@
 @section('content')
     <h1 class="text-center mb-3">
         @yield('dashboard.content.title')
+
         @isset($user)
             пользователя {{__($user->name)}}
         @endisset

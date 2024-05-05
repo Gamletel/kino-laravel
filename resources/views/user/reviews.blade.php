@@ -10,7 +10,7 @@
 
 @section('dashboard.content')
     <div class="col vstack gap-3">
-        <h4>Ваши отзывы:</h4>
+        <h4>Отзывы:</h4>
 
         @if(!empty($reviews))
             <div class="d-flex flex-column gap-1">
@@ -28,7 +28,7 @@
                                         class="value">{{__($review->stars)}}</span>/5</p>
                             </div>
 
-                            @if($review->user_id == auth()->id() || auth()->user()->admin)
+                            @if(auth()->check() && $review->user_id == auth()->id() || auth()->check() && auth()->user()->admin)
                                 <div class="btn-group h-100">
                                     <div class="edit-review-btn btn btn-outline-primary btn-sm"
                                          data-bs-toggle="modal" data-bs-target="#editReview"

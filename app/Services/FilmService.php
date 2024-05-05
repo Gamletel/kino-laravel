@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Film;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class FilmService
 {
@@ -18,20 +19,17 @@ class FilmService
 
     public function index()
     {
-//        return Cache::remember('films', 60 * 60, function () {
-//            return Film::all();
-//        });
-        return Film::paginate(6)->withQueryString();
+        return Film::paginate(6);
     }
 
-    public function show(int $id):Film
+    public function show(int $id): Film
     {
         return Cache::remember('film_' . $id, 60 * 60, function () use ($id) {
             return Film::find($id);
         });
     }
 
-    public function create():Film
+    public function create(): Film
     {
         $film = Film::factory()->create();
 
@@ -41,18 +39,18 @@ class FilmService
         $films->push($film);
         Cache::put('films', $films, 60 * 60);
 
-        return Cache::remember('film_'.$film->id, 60 * 60, function () use ($film) {
+        return Cache::remember('film_' . $film->id, 60 * 60, function () use ($film) {
             return Film::find($film->id);
         });
     }
 
-    public function destroy(int $id):void
+    public function destroy(int $id): void
     {
         $film = Film::findOrFail($id);
         $film->delete();
 
         Cache::forget('films');
-        Cache::remember('films', 60*60, function (){
+        Cache::remember('films', 60 * 60, function () {
             return Film::all();
         });
     }

@@ -27,7 +27,6 @@ class StoreReviewRequest extends FormRequest
             'stars' => ['required'],
             'title' => ['nullable', 'string'],
             'text' => ['nullable', 'string'],
-
         ];
     }
 }
