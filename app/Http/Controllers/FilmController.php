@@ -54,8 +54,14 @@ class FilmController extends Controller
 
         $reviews = $film->reviews;
 
-        $genreIds = $film->film_genres->pluck('genre_id')->toArray();
-        $genres = Genre::whereIn('id', $genreIds)->get();
+        $filmGenres = $film->film_genres;
+
+        if ($filmGenres) {
+            $genreIds = $filmGenres->pluck('genre_id')->toArray();
+            $genres = Genre::whereIn('id', $genreIds)->get();
+        } else {
+            $genres = collect(); // Пустая коллекция
+        }
 
         return view('film.show', compact(['film', 'reviews', 'genres']));
     }

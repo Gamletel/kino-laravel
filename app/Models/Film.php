@@ -38,11 +38,6 @@ class Film extends Model
         return $this->hasMany(Review::class);
     }
 
-    public function film_genres(): HasMany
-    {
-        return $this->hasMany(Film_Genre::class);
-    }
-
     public function searchableAs():string
     {
         return 'films_index';
